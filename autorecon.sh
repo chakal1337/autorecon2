@@ -51,7 +51,7 @@ rm dnsmap.txt &>/dev/null;
 rm probed.txt &>/dev/null;
 assetfinder -subs-only $1 | tee assets.txt;
 amass enum -d $1 -brute -alts -active | tee -a assets.txt;
-echo assets.txt | sort -u | tee assetstemp.txt;
+cat assets.txt | sort -u | tee assetstemp.txt;
 mv assetstemp.txt assets.txt;
 echo > hostsworking.txt;
 for i in $(cat assets.txt); do
