@@ -79,5 +79,5 @@ cat assets.txt | httprobe -c 50 -prefer-https | tee probed.txt;
 whatweb --color=never --input-file probed.txt | tee whatweb.txt;
 cat probed.txt | xargs -I{} -P 10 sh -c "echo {} | getallurls | tee -a all-urls.txt";
 cat all-urls.txt | grep "?" | grep "=" | tee urls-with-params.txt;
-cat whatweb.txt | grep "200 OK" | cut -d " " -f 1 | tee urls-200.txt;
+cat whatweb.txt | grep "200 OK" | cut -d " " -f 1 | sort -u | tee urls-200.txt;
 echo "All done...check $file_date";
