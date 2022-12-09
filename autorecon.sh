@@ -60,7 +60,7 @@ for i in $(cat assets.txt); do
  fi
 done
 mv hostsworking.txt assets.txt;
-cat assets.txt | xargs -I{} -P 10 dnsmap {} -r dnsmap.txt;
+cat assets.txt | xargs -I{} -P 20 dnsmap {} -r dnsmap.txt;
 cat dnsmap.txt | grep $1 | sort -u | tee -a assets.txt;
 rm dnsmap.txt;
 cat assets.txt | sort -u | tee assetstemp.txt;
@@ -70,14 +70,14 @@ for i in $(seq 1 5); do
 done
 cat wordlist.txt | sort -u | tee wordlisttmp.txt;
 mv wordlisttmp.txt wordlist.txt;
-cat assets.txt | xargs -I{} -P 10 dnsmap {} -r dnsmap.txt -w wordlist.txt;
+cat assets.txt | xargs -I{} -P 20 dnsmap {} -r dnsmap.txt -w wordlist.txt;
 cat dnsmap.txt | grep $1 | sort -u | tee -a assets.txt;
 rm dnsmap.txt;
 cat assets.txt | sort -u | tee assetstemp.txt;
 mv assetstemp.txt assets.txt;
-cat assets.txt | httprobe -c 50 -prefer-https | tee probed.txt;
+cat assets.txt | httprobe -c 100 -p http:66 -p http:81 -p http:445 -p http:457 -p http:1080 -p http:1100 -p http:1241 -p http:1352 -p http:1433 -p http:1434 -p http:1521 -p http:1944 -p http:2301 -p http:3000 -p http:3128 -p http:3306 -p http:4000 -p http:4001 -p http:4002 -p http:4100 -p http:5000 -p http:5432 -p http:5800 -p http:5801 -p http:5802 -p http:6346 -p http:6347 -p http:7001 -p http:7002 -p http:8080 -p https:8443 -p http:8888 -p http:30821 -t 3000 | tee probed.txt;
 whatweb --color=never --input-file probed.txt | tee whatweb.txt;
-cat probed.txt | xargs -I{} -P 10 sh -c "echo {} | getallurls | tee -a all-urls.txt";
+cat probed.txt | xargs -I{} -P 20 sh -c "echo {} | getallurls | tee -a all-urls.txt";
 cat all-urls.txt | grep "?" | grep "=" | tee urls-with-params.txt;
 cat whatweb.txt | grep "200 OK" | cut -d " " -f 1 | sort -u | tee urls-200.txt;
 echo "All done...check $file_date";
